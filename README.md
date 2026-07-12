@@ -58,7 +58,6 @@ The image pins PHP 8.3 on purpose. FreeScout fetches support mail over `ext-imap
 ## Build
 
 ```sh
-just build              # builds v1.8.212
-just build 1.8.229      # builds a specific version
-just lint               # hadolint + shellcheck
+just build 1.8.229      # build
+just lint               # shellcheck
 ```

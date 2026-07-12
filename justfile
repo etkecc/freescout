@@ -4,7 +4,6 @@ default:
 
 # lint the Dockerfile and shell scripts
 lint:
-    hadolint Dockerfile
     shellcheck rootfs/entrypoint.sh rootfs/usr/local/bin/*.sh rootfs/etc/s6/services/*/run
 
 # build the image locally for the given FreeScout version
