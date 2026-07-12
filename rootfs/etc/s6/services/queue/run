@@ -1,3 +1,3 @@
 #!/bin/sh
-cd /var/www/html
+cd /var/www/html || exit 1
 exec php artisan queue:work --queue=emails,default --sleep=3 --tries=3
