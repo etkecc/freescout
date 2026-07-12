@@ -8,7 +8,7 @@ FROM alpine:3.24.1 AS build
 
 ARG FREESCOUT_VERSION
 # renovate: datasource=github-releases depName=composer/composer
-ARG COMPOSER_VERSION=2.8.10
+ARG COMPOSER_VERSION=2.10.2
 
 # The alpine `composer` package pulls the DEFAULT php (php85), which lacks our
 # php83 extensions; so php83 is the only interpreter and composer is a pinned phar.
@@ -71,7 +71,6 @@ FROM alpine:3.24.1
 
 RUN apk add --no-cache \
       curl \
-      libcap \
       nginx \
       s6 \
       php83 \
@@ -103,7 +102,6 @@ RUN apk add --no-cache \
       php83-xmlwriter \
       php83-zip \
  && ln -sf /usr/bin/php83 /usr/bin/php \
- && setcap 'cap_net_bind_service=+ep' /usr/sbin/nginx \
  && rm -rf /var/cache/apk/* /etc/nginx/http.d/default.conf
 
 RUN addgroup -g 10001 freescout \
@@ -135,6 +133,6 @@ WORKDIR /var/www/html
 USER freescout
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
-  CMD sh -c 'c=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1/ 2>/dev/null); case "$c" in 000|502|503|504) exit 1;; *) exit 0;; esac'
+  CMD sh -c 'c=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8080/ 2>/dev/null); case "$c" in 000|502|503|504) exit 1;; *) exit 0;; esac'
 
 ENTRYPOINT ["/entrypoint.sh"]

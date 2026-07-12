@@ -10,7 +10,7 @@ This is a persistent worker, not just a web server: alongside serving the UI it 
 
 `s6-svscan` is PID 1 and supervises four processes as one uid:
 
-- `nginx` on port 80, fronting
+- `nginx` on port 8080, fronting
 - `php-fpm` over a unix socket
 - the scheduler (`schedule:run` every minute), which drives the time-based automations
 - the queue worker (`queue:work` over the `emails` and `default` queues), which delivers and fetches mail
