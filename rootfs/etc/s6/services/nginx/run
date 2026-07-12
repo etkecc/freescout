@@ -1,0 +1,6 @@
+#!/bin/sh
+mkdir -p /tmp/nginx/client_body /tmp/nginx/proxy /tmp/nginx/fastcgi /tmp/nginx/uwsgi /tmp/nginx/scgi
+while [ ! -S /tmp/php-fpm.sock ]; do
+  sleep 0.1
+done
+exec nginx -e /dev/stderr -g 'daemon off;'
