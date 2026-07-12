@@ -20,7 +20,7 @@ mkdir -p "$DATA/storage/framework/cache/data" \
          "$DATA/storage/app/public" \
          "$DATA/storage/debugbar" \
          "$DATA/Modules" \
-         /tmp/bootstrap-cache /tmp/public-modules /tmp/gen
+         /tmp/bootstrap-cache /tmp/public-modules /tmp/gen /tmp/css-builds /tmp/js-builds
 
 if [ -z "$(ls -A "$DATA/Modules" 2>/dev/null)" ]; then
   tar -C "$WEBROOT/.skel-modules" -cf - . | tar -C "$DATA/Modules" -xf -

@@ -115,6 +115,8 @@ RUN set -eux; \
     rm -rf /var/www/html/bootstrap/cache \
            /var/www/html/public/storage \
            /var/www/html/public/modules \
+           /var/www/html/public/css/builds \
+           /var/www/html/public/js/builds \
            /var/www/html/public/js/laroute.js; \
     ln -s /data/storage            /var/www/html/storage; \
     ln -s /data/Modules            /var/www/html/Modules; \
@@ -122,6 +124,8 @@ RUN set -eux; \
     ln -s /data/storage/app/public /var/www/html/public/storage; \
     ln -s /tmp/bootstrap-cache     /var/www/html/bootstrap/cache; \
     ln -s /tmp/public-modules      /var/www/html/public/modules; \
+    ln -s /tmp/css-builds          /var/www/html/public/css/builds; \
+    ln -s /tmp/js-builds           /var/www/html/public/js/builds; \
     ln -s /tmp/gen/laroute.js      /var/www/html/public/js/laroute.js
 
 COPY rootfs/ /
