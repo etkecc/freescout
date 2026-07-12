@@ -1,8 +1,9 @@
 #!/bin/sh
-# Translate env vars into Laravel-native process env, and
-# persist APP_KEY exactly once. Sourced by entrypoint.sh so exports reach every
-# s6 service. Laravel env() reads getenv() before .env, so the only file we own
-# is /data/config, and it holds nothing but APP_KEY.
+# Translate configuration env vars into Laravel-native process env, and seed
+# APP_KEY once. Sourced by entrypoint.sh so exports reach every s6 service.
+# Laravel env() reads getenv() before .env; /data/config (the .env file) is
+# seeded with APP_KEY on first boot, then owned by FreeScout, which persists
+# dashboard settings (2FA policy, etc.) there.
 set -eu
 
 lower() { printf '%s' "$1" | tr '[:upper:]' '[:lower:]'; }
@@ -31,17 +32,11 @@ export DB_PASSWORD="${DB_PASS:-}"
 
 [ -n "${DB_PGSQL_SSL_MODE:-}" ] && export DB_PGSQL_SSLMODE="$DB_PGSQL_SSL_MODE"
 
-needs_rewrite=1
-if [ -f /data/config ] && [ "$(grep -cE '[^[:space:]]' /data/config)" = "1" ] && grep -q '^APP_KEY=' /data/config; then
-  needs_rewrite=0
-fi
-if [ "$needs_rewrite" = 1 ]; then
-  key=$(grep -m1 '^APP_KEY=' /data/config 2>/dev/null | cut -d= -f2-)
-  [ -z "$key" ] && key="base64:$(head -c 32 /dev/urandom | base64)"
-  if [ -f /data/config ]; then
-    cp -f /data/config /data/config.legacy 2>/dev/null || true
-  fi
-  tmp="$(mktemp /data/config.XXXXXX)"
-  ( umask 077; printf 'APP_KEY=%s\n' "$key" > "$tmp" )
-  mv -f "$tmp" /data/config
+# Seed APP_KEY once, on first boot only. After that FreeScout owns /data/config:
+# it writes dashboard settings (2FA policy, etc.) there, so rewriting the file
+# would destroy them. An existing file without APP_KEY is left untouched on
+# purpose: minting a new key would make already-encrypted data undecryptable, so
+# we let FreeScout fail loudly rather than silently corrupt.
+if [ ! -f /data/config ]; then
+  ( umask 077; printf 'APP_KEY=base64:%s\n' "$(head -c 32 /dev/urandom | base64)" > /data/config )
 fi
