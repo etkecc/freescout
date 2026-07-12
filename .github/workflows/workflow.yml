@@ -8,7 +8,7 @@ on:
     - cron: '0 5 * * 1'
 env:
   # renovate: datasource=github-releases depName=freescout-helpdesk/freescout
-  freescout_version: 1.8.212
+  freescout_version: 1.8.229
 permissions:
   contents: read
   packages: write
