@@ -38,7 +38,9 @@ fi
 if [ "$needs_rewrite" = 1 ]; then
   key=$(grep -m1 '^APP_KEY=' /data/config 2>/dev/null | cut -d= -f2-)
   [ -z "$key" ] && key="base64:$(head -c 32 /dev/urandom | base64)"
-  [ -f /data/config ] && cp -f /data/config /data/config.legacy 2>/dev/null || true
+  if [ -f /data/config ]; then
+    cp -f /data/config /data/config.legacy 2>/dev/null || true
+  fi
   tmp="$(mktemp /data/config.XXXXXX)"
   ( umask 077; printf 'APP_KEY=%s\n' "$key" > "$tmp" )
   mv -f "$tmp" /data/config
