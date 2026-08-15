@@ -1,5 +1,7 @@
 # FreeScout (docker image)
 
+This is a Docker image for [FreeScout](https://freescout.net/), a free and open-source helpdesk and shared inbox solution.
+
 Most self-hosted FreeScout images run as root, write their logs to a file nobody rotates until the disk fills, and fall over the moment you point a read-only filesystem at them. This one is built the other way around. It runs as an unprivileged user with zero Linux capabilities. It boots happily under `--read-only` and streams every log line straight to `docker logs`. If you run a tight ship, it won't fight you.
 
 Published as `ghcr.io/etkecc/freescout:v<freescout-version>` (for example `v1.8.229`), for `linux/amd64` and `linux/arm64`. The tag is the FreeScout release; the PHP version is an internal detail and stays out of the tag.
@@ -76,7 +78,7 @@ docker run -d --name freescout \
 
 > **The `/tmp` tmpfs has to allow `exec`.** s6 runs its service scripts out of `/tmp/s6`, so the reflex `noexec` you slap on `/tmp` everywhere else will kill this container on boot. Everything else about `/tmp` is happy with the defaults.
 
-For a production deployment with Traefik, a managed database, backups, and upgrades wired together, use the etke.cc FreeScout role for the MASH Ansible playbook.
+For a production deployment with Traefik, a managed database, backups, and upgrades wired together, use the etke.cc FreeScout role for the [MASH Ansible playbook](https://github.com/mother-of-all-self-hosting/mash-playbook/). Refer to [this page](https://github.com/mother-of-all-self-hosting/mash-playbook/blob/main/docs/services/freescout.md) for details about usage.
 
 ## Modules
 
