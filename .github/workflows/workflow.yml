@@ -1,7 +1,7 @@
 name: CI (main)
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "renovate/**" ]
   pull_request:
     branches: [ "main" ]
 env:
@@ -45,7 +45,9 @@ jobs:
         uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         with:
           platforms: linux/amd64,linux/arm64
-          push: true
+          # Renovate branches (renovate/**) run this job as a build-only gate:
+          # nothing is tagged or pushed until the change reaches main.
+          push: ${{ github.ref_name == 'main' }}
           build-args: |
             FREESCOUT_VERSION=${{ env.freescout_version }}
           tags: ${{ steps.meta.outputs.tags }}

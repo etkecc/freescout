@@ -7,6 +7,16 @@
   "labels": [
     "dependencies"
   ],
+  "packageRules": [
+    {
+      "description": "Automerge FreeScout version bumps once the branch's lint and image-build checks pass (via branch push - no PR)",
+      "matchPackageNames": [
+        "freescout-helpdesk/freescout"
+      ],
+      "automerge": true,
+      "automergeType": "branch"
+    }
+  ],
   "customManagers": [
     {
       "customType": "regex",
