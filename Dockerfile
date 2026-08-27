@@ -8,7 +8,7 @@ FROM alpine:3.24.1 AS build
 
 ARG FREESCOUT_VERSION
 # renovate: datasource=github-releases depName=composer/composer
-ARG COMPOSER_VERSION=2.10.2
+ARG COMPOSER_VERSION=2.10.3
 
 # The alpine `composer` package pulls the DEFAULT php (php85), which lacks our
 # php83 extensions; so php83 is the only interpreter and composer is a pinned phar.
