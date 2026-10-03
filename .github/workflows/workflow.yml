@@ -6,7 +6,7 @@ on:
     branches: [ "main" ]
 env:
   # renovate: datasource=github-releases depName=freescout-helpdesk/freescout
-  freescout_version: 1.8.244
+  freescout_version: 1.8.245
 permissions:
   contents: read
   packages: write
