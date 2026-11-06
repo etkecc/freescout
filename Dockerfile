@@ -4,7 +4,7 @@
 # Stage 1: build (composer + assets)  #
 #######################################
 
-FROM alpine:3.24.3 AS build
+FROM alpine:3.24.4 AS build
 
 ARG FREESCOUT_VERSION
 # renovate: datasource=github-releases depName=composer/composer
@@ -67,7 +67,7 @@ RUN APP_KEY="base64:$(head -c32 /dev/urandom | base64)" php artisan freescout:bu
 # Stage 2: runtime                    #
 #######################################
 
-FROM alpine:3.24.3
+FROM alpine:3.24.4
 
 RUN apk add --no-cache \
       curl \
